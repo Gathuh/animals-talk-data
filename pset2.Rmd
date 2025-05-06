@@ -1,0 +1,295 @@
+---
+title: "RMHI/ARMP Problem Set 2"
+author: 'Your ID goes here [Word Count: XX]'
+output: word_document
+---
+
+Please put your answers here, following the instructions in the assignment description. Put your answers and word count tallies in the locations indicated; if none is indicated that means there is no word count for that question. Remember to knit as you go, and submit the knitted version of this on Canvas.
+
+```{r setup, include=FALSE, warning=FALSE, message=FALSE}
+# We'll begin by loading up the libraries and data we need, as always.
+knitr::opts_chunk$set(echo = TRUE)
+
+# this deletes any variables that are in your environment
+# useful so you don't get conflicts you're unaware of
+rm(list=ls())
+
+# loading the libraries
+library(tidyverse)
+library(here)
+library(ggplot2)
+# you might need other libraries; load here here if so
+
+
+# loading datasets (don't change this)
+ds <- read_csv(file=here("sneezes.csv"))
+dl <- read_csv(file=here("liedetector.csv"))
+df <- read_csv(file=here("foodwaste.csv"))
+da <- read_csv(file=here("animals.csv"))
+dh <- read_csv(file=here("health.csv"))
+dp <- read_csv(file=here("positivity.csv"))
+
+# makes variables into factors (don't change this)
+dh$person <- as.factor(dh$person)
+dp$person <- as.factor(dp$person)
+dl$question <- as.factor(dl$question)
+ds$distCat <- as.factor(ds$distCat)
+
+# reorders so orders are intuitive, and converts to factors
+# (don't change this)
+da$size <- factor(da$size,levels=c("small","medium","large"))
+da$year <- factor(da$year,levels=c("past","present"))
+dh$height <- factor(dh$height,levels=c("short","tall"))
+dh$income <- factor(dh$income,levels=c("poor","rich"))
+dp$then <- factor(dp$then,levels=c("positive","negative"))
+dp$now <- factor(dp$now,levels=c("positive","negative"))
+```
+
+
+## Q1
+
+
+**Q1a**
+
+```{r q1a, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
+f_five_data=head(ds)
+cor.test(ds$distance,ds$sneezes)
+```
+
+*ANSWER:* XXX [Word Count: N]
+
+
+**Q1b**
+
+```{r q1b, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
+library(ggplot2)
+library(dplyr)
+
+summary_df <- ds %>%
+  group_by(distCat) %>%
+  summarise(
+    mean_sneezes = mean(sneezes),
+    se = sd(sneezes) / sqrt(n())
+  )
+
+colors <- c("blue", "green", "red")
+names(colors) <- levels(ds$distCat)
+
+ggplot(summary_df, aes(x = distCat, y = mean_sneezes, fill = distCat)) +
+  geom_bar(stat = "identity", color = "black", alpha = 0.6) +
+  geom_errorbar(aes(ymin = mean_sneezes - se, ymax = mean_sneezes + se),
+                width = 0.2) +
+  geom_point(data = ds, 
+             aes(x = distCat, y = sneezes, color = distCat), 
+             position = position_nudge(x = 0.05), 
+             alpha = 0.8, size = 2, show.legend = FALSE) +
+  scale_fill_manual(values = colors) +
+  scale_color_manual(values = colors) +
+  theme_minimal() +
+  labs(
+    title = "Mean Number of Sneezes by Distance Category",
+    x = "Distance Category",
+    y = "Mean Number of Sneezes"
+  ) +
+  theme(legend.position = "none")
+
+```
+
+
+**Q1c**
+
+```{r q1c, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
+library(car)
+
+leveneTest(sneezes ~ distCat, data = ds)
+
+model <- aov(sneezes ~ distCat, data = ds)
+shapiro.test(residuals(model))
+
+```
+
+*Note that the order of these assumptions (i.e., what assumption you put in 1 vs 2) does not matter! The words ASSUMPTION 1 and ASSUMPTION 2 do not contribute to word count.* 
+
+*ASSUMPTION 1:* XXX [Word Count: N]
+
+*ASSUMPTION 2:* XXX [Word Count: N]
+
+
+**Q1d**
+
+```{r q1d, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
+anova_model <- aov(sneezes ~ distCat, data = ds)
+summary(anova_model)
+```
+
+*ANSWER:* XXX [Word Count: N]
+
+
+**Q1e**
+
+```{r q1e, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
+TukeyHSD(anova_model)
+```
+
+*ANSWER:* XXX [Word count: N]
+
+
+**Q1f**
+
+*ANSWER:* XXX [Word count: N]
+
+
+## Q2 
+
+
+**Q2a** 
+
+```{r q2a, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
+# insert your code here
+```
+
+*ANSWER:* XXX [Word count: N]
+
+
+**Q2b** 
+
+```{r q2b, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
+# insert your code here
+```
+
+*ANSWER:* XXX [Word count: N]
+
+
+**Q2c** 
+
+```{r q2c, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
+# insert your code here
+```
+
+*ANSWER:* XXX [Word count: N]
+
+
+**Q2d** 
+
+```{r q2d, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
+# insert your code here
+```
+
+*ANSWER:* XXX [Word count: N]
+
+
+## Q3
+
+
+**Q3a**
+
+```{r q3a, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
+# insert your code here
+```
+
+*ANSWER:* XXX [Word count: N]
+
+
+## Q4
+
+**Q4a**
+
+```{r q4a, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
+# insert your code here
+```
+
+*ANSWER:* XXX [Word count: N]
+
+
+**Q4b**
+
+```{r q4b, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
+# insert your code here
+```
+
+*ANSWER:* (i) XXX (ii) XXX [Word count: N]
+
+
+**Q4c**
+
+```{r q4c, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
+# insert your code here
+```
+
+*ANSWER:* XXX [Word count: N]
+
+
+**Q4d**
+
+```{r q4d, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
+# insert your code here
+```
+
+*ANSWER:* (i) XXX (ii) XXX [Word count: N]
+
+
+## Q5
+
+
+**Q5a**
+
+```{r q5a, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
+# insert your code here
+```
+
+*ANSWER:* XXX [Word count: N]
+
+
+**Q5b**
+
+```{r q5b, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
+# insert your code here
+```
+
+*ANSWER:* XXX [Word count: N]
+
+
+## Q6
+
+
+**Q6a**
+
+```{r q6a, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
+# insert your code here
+```
+
+*ANSWER:* XXX [Word count: N]
+
+
+**Q6b**
+
+```{r q6b, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
+# insert your code here
+```
+
+*ANSWER:* XXX [Word count: N]
+
+
+**Q6c** 
+
+*ANSWER:* XXX [Word count: N]
+
+
+## Q7
+
+
+**Q7a**
+
+*ANSWER:* (i) XXX (ii) XXX (iii) XXX 
+
+
+**Q7b**
+
+*ANSWER:* (i) XXX (ii) XXX (iii) XXX [Word Count: N]
+
+
+## Q8
+
+
+*ANSWER:* XXX
+
