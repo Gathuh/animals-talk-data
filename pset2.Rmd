@@ -18,6 +18,11 @@ rm(list=ls())
 library(tidyverse)
 library(here)
 library(ggplot2)
+library(dplyr)
+library(effectsize)
+library(lm.beta)
+library(knitr)
+
 # you might need other libraries; load here here if so
 
 
@@ -57,14 +62,19 @@ cor.test(ds$distance,ds$sneezes)
 ```
 
 *ANSWER:* XXX [Word Count: N]
+To determine whether there is a linear association between distance from the plant and number of sneezes, a Pearson’s product-moment correlation was conducted, as both variables are continuous and approximately linearly related.
 
+Null hypothesis (H₀): There is no correlation between distance and sneezes (ρ = 0).
+
+Alternative hypothesis (H₁): There is a non-zero correlation between distance and sneezes (ρ ≠ 0).
+
+The test yielded a statistically significant result: t(34) = –2.71, p = .0105. The estimated correlation coefficient was r = –0.42 with a 95% confidence interval [–0.66, –0.11], indicating a moderate negative linear relationship (Field, 2013). As distance from the plant increases, the number of sneezes tends to decrease.
+
+Thus, the data provide evidence of a meaningful negative relationship between proximity to the plant and allergic response, supporting Foxy's suspicion.
 
 **Q1b**
 
 ```{r q1b, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
-library(ggplot2)
-library(dplyr)
-
 summary_df <- ds %>%
   group_by(distCat) %>%
   summarise(
@@ -145,7 +155,8 @@ TukeyHSD(anova_model)
 **Q2a** 
 
 ```{r q2a, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
-# insert your code here
+dl_data_five<-head(dl)
+shapiro.test(dl$lfb)
 ```
 
 *ANSWER:* XXX [Word count: N]
@@ -154,7 +165,9 @@ TukeyHSD(anova_model)
 **Q2b** 
 
 ```{r q2b, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
-# insert your code here
+t.test(dl$lfb,mu=50)
+mean(dl$lfb)
+rank_biserial(dl$lfb, mu = 50)
 ```
 
 *ANSWER:* XXX [Word count: N]
@@ -163,7 +176,8 @@ TukeyHSD(anova_model)
 **Q2c** 
 
 ```{r q2c, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
-# insert your code here
+clean_data <- drop_na(dl)
+shapiro.test(clean_data$lfb - clean_data$rainbow)
 ```
 
 *ANSWER:* XXX [Word count: N]
@@ -172,7 +186,9 @@ TukeyHSD(anova_model)
 **Q2d** 
 
 ```{r q2d, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
-# insert your code here
+t.test(paired_data$lfb,dl$rainbow)
+mean(paired_data$lfb)
+mean(paired_data$rainbow)
 ```
 
 *ANSWER:* XXX [Word count: N]
@@ -184,7 +200,12 @@ TukeyHSD(anova_model)
 **Q3a**
 
 ```{r q3a, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
-# insert your code here
+head(dp)
+table_dp <- table(dp$then, dp$now)
+table_dp
+mcnemar.test(table_dp)
+
+
 ```
 
 *ANSWER:* XXX [Word count: N]
@@ -195,7 +216,9 @@ TukeyHSD(anova_model)
 **Q4a**
 
 ```{r q4a, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
-# insert your code here
+head(df)
+model <- lm(amount ~ month + population, data = df)
+summary(model)
 ```
 
 *ANSWER:* XXX [Word count: N]
@@ -204,7 +227,8 @@ TukeyHSD(anova_model)
 **Q4b**
 
 ```{r q4b, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
-# insert your code here
+model_interaction <- lm(amount ~ month * population, data = df)
+summary(model_interaction)
 ```
 
 *ANSWER:* (i) XXX (ii) XXX [Word count: N]
@@ -213,7 +237,11 @@ TukeyHSD(anova_model)
 **Q4c**
 
 ```{r q4c, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
-# insert your code here
+model_std <- lm.beta(model)
+model_interaction_std <- lm.beta(model_interaction)
+summary(model_std)
+summary(model_interaction_std)
+
 ```
 
 *ANSWER:* XXX [Word count: N]
@@ -222,7 +250,9 @@ TukeyHSD(anova_model)
 **Q4d**
 
 ```{r q4d, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
-# insert your code here
+df$percapita <- df$amount / df$population
+model_percapita <- lm(percapita ~ month, data = df)
+summary(model_percapita)
 ```
 
 *ANSWER:* (i) XXX (ii) XXX [Word count: N]
@@ -234,7 +264,13 @@ TukeyHSD(anova_model)
 **Q5a**
 
 ```{r q5a, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
-# insert your code here
+head(da)
+size_table <- table(da$year, da$size)
+size_table
+test_result <- chisq.test(size_table)
+#cramersV(size_table)
+test_result
+
 ```
 
 *ANSWER:* XXX [Word count: N]
@@ -243,7 +279,7 @@ TukeyHSD(anova_model)
 **Q5b**
 
 ```{r q5b, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
-# insert your code here
+test_result$stdres
 ```
 
 *ANSWER:* XXX [Word count: N]
@@ -255,7 +291,12 @@ TukeyHSD(anova_model)
 **Q6a**
 
 ```{r q6a, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
-# insert your code here
+head(dh)
+table(dh$height)
+table(dh$income)
+
+model_dh <- aov(health ~ income * height, data = dh)
+summary(model_dh)
 ```
 
 *ANSWER:* XXX [Word count: N]
@@ -264,7 +305,7 @@ TukeyHSD(anova_model)
 **Q6b**
 
 ```{r q6b, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
-# insert your code here
+eta_squared(model)
 ```
 
 *ANSWER:* XXX [Word count: N]
@@ -290,6 +331,6 @@ TukeyHSD(anova_model)
 
 ## Q8
 
-
+My favourite character is Super Size — not just because of his name (which is great), but because he brings calm, diplomacy, and perspective to the group. While others argue or get defensive, he steps in to de-escalate tension and refocus everyone on collaboration. In a data-driven debate where personalities clash and egos flare, having someone like Super Size — thoughtful, kind, and balanced — is exactly what a team needs. Plus, his self-awareness and sense of humour make him even more likeable.
 *ANSWER:* XXX
 
