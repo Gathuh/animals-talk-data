@@ -61,16 +61,9 @@ f_five_data=head(ds)
 cor.test(ds$distance,ds$sneezes)
 ```
 
-*ANSWER:* XXX [Word Count: N]
-To determine whether there is a linear association between distance from the plant and number of sneezes, a Pearson’s product-moment correlation was conducted, as both variables are continuous and approximately linearly related.
-
-Null hypothesis (H₀): There is no correlation between distance and sneezes (ρ = 0).
-
-Alternative hypothesis (H₁): There is a non-zero correlation between distance and sneezes (ρ ≠ 0).
-
-The test yielded a statistically significant result: t(34) = –2.71, p = .0105. The estimated correlation coefficient was r = –0.42 with a 95% confidence interval [–0.66, –0.11], indicating a moderate negative linear relationship (Field, 2013). As distance from the plant increases, the number of sneezes tends to decrease.
-
-Thus, the data provide evidence of a meaningful negative relationship between proximity to the plant and allergic response, supporting Foxy's suspicion.
+*ANSWER:* 
+A Pearson’s product-moment correlation test was conducted to assess the null hypothesis that there the relationship between distance from the plant and sneezes is not significant against the alternative hypothesis that relationship is significant, as both variables were continuous. The test showed a p-value less than 0.05 suggesting leading to a rejection of null hypothesis and concluding there is significant relationship. The significant negative correlation indicated that as distance increased, sneezes decreased, suggesting the plant likely caused Foxy’s sneezing.
+ [Word Count: 53]
 
 **Q1b**
 
@@ -105,6 +98,7 @@ ggplot(summary_df, aes(x = distCat, y = mean_sneezes, fill = distCat)) +
 
 ```
 
+The bar plot shows a decreasing trend in the mean number of sneezes across increasing distance. When closer to the plant (dist1) sneeze were more on average than those farther away (dist3). The error bars, representing standard error, do not overlap substantially between dist1 and dist3, suggesting the difference may be meaningful
 
 **Q1c**
 
@@ -120,9 +114,11 @@ shapiro.test(residuals(model))
 
 *Note that the order of these assumptions (i.e., what assumption you put in 1 vs 2) does not matter! The words ASSUMPTION 1 and ASSUMPTION 2 do not contribute to word count.* 
 
-*ASSUMPTION 1:* XXX [Word Count: N]
+*ASSUMPTION 1:*  Levene’s test evaluated homogeneity of variances, testing the null hypothesis of equal variances across groups. The test showed a p-value of 0.224. The p-value was greater than 0.05 and thus the null hypothesis was not rejected, concluding there wasz equal variances. [Word Count: 37]
 
-*ASSUMPTION 2:* XXX [Word Count: N]
+*ASSUMPTION 2:* The Shapiro-Wilk test assessed normality of residuals. It tested the null hypothesis that residuals were normally distributed. The test showed W = 0.95864, p-value = 0.1952. Since the p-value exceeded 0.05, the null hypothesis was not rejected, indicating residuals were normally distributed.
+ [Word Count: 33]
+
 
 
 **Q1d**
@@ -132,7 +128,8 @@ anova_model <- aov(sneezes ~ distCat, data = ds)
 summary(anova_model)
 ```
 
-*ANSWER:* XXX [Word Count: N]
+*ANSWER:* A one-way ANOVA test was carried to evaluate differences in the number of sneezes across the three categories of distances, since the assumptions of normality and homogeneity of variances were not violated in the hypothesis testscarried out in Q1c. The predictor was distance category, and the outcome was the number of sneezes. The test showed F(2, 33) = 2.876, p-value = 0.0706. The p-value being greater than 0.05 indicated no significant difference in sneezes across categories. The effect size, eta-squared, was calculated as 0.148, suggesting a moderate effect of distance on sneezing.
+[Word Count: 72]
 
 
 **Q1e**
@@ -141,12 +138,12 @@ summary(anova_model)
 TukeyHSD(anova_model)
 ```
 
-*ANSWER:* XXX [Word count: N]
+*ANSWER:* Post-hoc tests using Tukey’s HSD were conducted to compare mean sneezes across distance categories. The results showed p-values of 0.6112 (dist2 vs. dist1), 0.0585 (dist3 vs. dist1), and 0.3378 (dist3 vs. dist2). No differences were significant, as all p-values exceeded 0.05. [Word count: 34]
 
 
 **Q1f**
 
-*ANSWER:* XXX [Word count: N]
+*ANSWER:* The analysis in Q1a with significant correlation and anova test in Q1c-e (no significant post-hoc differences) lead to different conclusions. Q1a suggests a significant relationship, while Q1c-e does not confirm significant mean differences. The ANOVA is more appropriate, as it directly tests group means, whereas correlation assesses a linear trend, leading to a better study of the research question of category differences. [Word count: 71]
 
 
 ## Q2 
@@ -159,7 +156,7 @@ dl_data_five<-head(dl)
 shapiro.test(dl$lfb)
 ```
 
-*ANSWER:* XXX [Word count: N]
+*ANSWER:* The assumption tested was normality of the lie detector scores for LFB. The null hypothesis that the data follows a normal distribution vs alternative hypothesis that the data does not follow a normal distribution was conducted using  Shapiro-Wilk test on the variable lfb with 0.05 significance level. The test showed a p-value was greater than 0.05 hence the null hypothesis was not rejected.The p-value (0.5695) being greater than 0.05 indicated the scores were approximately normally distributed. [Word count: 71]
 
 
 **Q2b** 
@@ -170,7 +167,7 @@ mean(dl$lfb)
 rank_biserial(dl$lfb, mu = 50)
 ```
 
-*ANSWER:* XXX [Word count: N]
+*ANSWER:* The null hypothesis that the lie was by chance against the alternative that the lie was significantly different from the mean was conducted using a one-sample t-test. The hypothesis was conducted to compare LFB’s lie detector scores to a chance level of 50 and 0.05 signifincance level, since the normality assumption was not violated in Q2a. The mean score was 56.05. The test showed a p-value less than 0.05, leading to rejection of null hypothesis and concluding a significant difference. The rank-biserial effect size was 0.32, suggesting a moderate effect. LFB’s scores were significantly higher than chance, implying greater honesty. [Word count: 67]
 
 
 **Q2c** 
@@ -180,18 +177,19 @@ clean_data <- drop_na(dl)
 shapiro.test(clean_data$lfb - clean_data$rainbow)
 ```
 
-*ANSWER:* XXX [Word count: N]
+*ANSWER:* The assumption tested was that the difference between LFB and Rainbowz’s lie detector scores followed a normal distribution, against the alternative that they did not. The Shapiro-Wilk test was conducted on the difference scores (lfb - rainbow), using a significance level of 0.05. The test showed a p-value of 0.1868, which exceeds the significance value of 0.05, thus, the null hypothesis  was not rejected, indicating that the assumption of normality was not violated and the differences were approximately normally distributed. [Word count: 41]
 
 
 **Q2d** 
 
 ```{r q2d, warning=FALSE, message=FALSE, fig.width=4.5, fig.height=3}
-t.test(paired_data$lfb,dl$rainbow)
-mean(paired_data$lfb)
-mean(paired_data$rainbow)
+
+t.test(clean_data$lfb,clean_data$rainbow)
+mean(clean_data$lfb)
+mean(clean_data$rainbow)
 ```
 
-*ANSWER:* XXX [Word count: N]
+*ANSWER:* A Welch two-sample t-test was conducted to compare LFB and Rainbow’s lie detector scores, as the normality assumption was not violated in Q2c. The test evaluated the null hypothesis that the mean scores were equal versus the alternative hypothesis that they differed, using a significance level of 0.05. The mean for LFB was 56.07895, and for Rainbow, 57.39474. The test result showed a p-value greater than 0.05, thus the null hypothesis was not rejected. This led to the conclusion that there was no significant difference, suggesting the lie detector rated both similarly and that any lie was by chance. [Word count: 81]
 
 
 ## Q3
@@ -208,7 +206,8 @@ mcnemar.test(table_dp)
 
 ```
 
-*ANSWER:* XXX [Word count: N]
+*ANSWER:* The null hypothesis that the proportions of changes between the two years were equal against the alternative hypothesis that they differed significantly was conducted using a McNemar’s Chi-squared test using a significance level of 0.05. The table showed 21 stayed positive, 14 stayed negative, 23 shifted from positive to negative, and 9 from negative to positive. The test result showed a p-value of 0.02156, which was less than 0.05, thus the null hypothesis was rejected. The p-value being less than 0.05 indicated a significant change, suggesting people’s outlook worsened over time. 
+[Word count: 88]
 
 
 ## Q4
@@ -221,7 +220,8 @@ model <- lm(amount ~ month + population, data = df)
 summary(model)
 ```
 
-*ANSWER:* XXX [Word count: N]
+*ANSWER:* A multiple linear regression was conducted to evaluate if the outcome (food waste) was predicted by the two variables (month and population). The model showed  p-value less than 0.001 with R-squared = 0.7988, showing a significant model explaining 79.88% of variance, only 20% of the variance was not explained by the model and was assumed to be random errors. The coefficient for month was -0.235521 (p = 8.08e-15), suggesting food waste decreased by 0.235521 units per month. The coefficient for population was 0.028949 (p = 8.01e-07), indicating food waste increased by 0.028949 units per person. This supported a decline in food waste over time suggesting less food availability.
+[Word count: 132]
 
 
 **Q4b**
@@ -231,7 +231,7 @@ model_interaction <- lm(amount ~ month * population, data = df)
 summary(model_interaction)
 ```
 
-*ANSWER:* (i) XXX (ii) XXX [Word count: N]
+*ANSWER:* (i) A multiple linear regression with an interaction term was conducted. The month coefficient was -1.1329585, indicating food waste decreased by 1.1329585 units per month when population was zero. The interaction term (month:population) was 0.0009498, suggesting that as population increased, the rate of decrease in food waste per month slowed by 0.0009498 units per person. (ii) The R-squared was 0.8345, compared to 0.7988 in Q4a. The higher R-squared suggested the interaction model explained more variance, fitting the data better by capturing the combined effect of month and population [Word count: 106]
 
 
 **Q4c**
@@ -244,7 +244,7 @@ summary(model_interaction_std)
 
 ```
 
-*ANSWER:* XXX [Word count: N]
+*ANSWER:* The standardized coefficients for Q4a showed month as -0.680655 and population as 0.361876. In Q4b, month was -3.2742466, population was 0.0199359, and the interaction term was 2.4784679. The direction of month remained negative in both models, but population’s direction changed from positive to nearly neutral, and its magnitude decreased significantly. The interaction term’s coefficient in Q4b indicated that the effect of month on food waste depended on population size, with a positive standardized value suggesting a moderating effect. These models suggested that time consistently reduced food waste, but population’s role varied, with the interaction model revealing a more complex relationship between predictors and food waste. [Word count: 192]
 
 
 **Q4d**
@@ -255,7 +255,7 @@ model_percapita <- lm(percapita ~ month, data = df)
 summary(model_percapita)
 ```
 
-*ANSWER:* (i) XXX (ii) XXX [Word count: N]
+*ANSWER:* (i) One advantage of analyzing per capita food waste was simplifying the model by combining amount and population into one variable, reducing multicollinearity seen in Q4a-Q4b where population and month interacted. This provided a clearer view of food waste trends over time. (ii) One disadvantage was losing insight into the separate effects of population and amount. Q4b showed a significant interaction, indicating population moderated the effect of time, which per capita analysis obscured, potentially missing nuances in how population dynamics influenced food waste. [Word count: 113]
 
 
 ## Q5
@@ -273,7 +273,7 @@ test_result
 
 ```
 
-*ANSWER:* XXX [Word count: N]
+*ANSWER:* A Chi-squared test was conducted to compare the distribution of animal sizes (small, medium, large) between past and present. The test conducted the null hypothesis that the distributions were the same against the alternative hypothesis that they differed, using a significance level of 0.05. The past counts for past and present in both small, medium and large are as shown. The test result showed a p-value of 0.04486, which was less than 0.05, this led to the rejection of the null hypothesis. The significant p-value suggested the distribution of animal sizes changed over time [Word count: 76]
 
 
 **Q5b**
@@ -282,7 +282,7 @@ test_result
 test_result$stdres
 ```
 
-*ANSWER:* XXX [Word count: N]
+*ANSWER:* The adjusted residuals from the Chi-squared test were calculated. They showed values for past and present in small , medium and large as above. The large size residuals exceeded ±1.96, indicating a significant difference. This suggested the proportion of large animals decreased significantly from past to present, while small and medium sizes did not differ significantly. [Word count: 56]
 
 
 ## Q6
@@ -299,7 +299,7 @@ model_dh <- aov(health ~ income * height, data = dh)
 summary(model_dh)
 ```
 
-*ANSWER:* XXX [Word count: N]
+*ANSWER:* A two-way ANOVA was conducted to evaluate the null hypothesis that income and height had no effect on health ratings against the alternative that suggested that they did with a significance level of 0.05, including their interaction. The predictors were income and height, with health as the outcome. The results showed income had a p-value of 0.02278, and height had a p-value of 0.00698, both significant. The interaction was not significant since it had a p-value of 0.22873. This indicated that both income and height independently influenced health, with richer or taller individuals both contributing to better health outcomes. [Word count: 101]
 
 
 **Q6b**
@@ -308,12 +308,12 @@ summary(model_dh)
 eta_squared(model)
 ```
 
-*ANSWER:* XXX [Word count: N]
+*ANSWER:* The eta-squared values for the predictors were calculated. Income had an eta-squared of 0.032, and height had 0.046. Height accounted for the most variance in health, as its eta-squared (0.046) was higher than income’s (0.032), indicating a stronger effect on health ratings. [Word count: 27]
 
 
 **Q6c** 
 
-*ANSWER:* XXX [Word count: N]
+*ANSWER:* The results suggested that in Otherland, health was influenced by both income and height. Taller and richer individuals likely had better health, as both factors were significant predictors. The lack of interaction indicated their effects were independent. It’s possible taller individuals had better access to resources, or height reflected better nutrition historically. Similarly, richer individuals might afford better healthcare. This suggested socio-economic and physical factors played a role in health disparities, potentially exacerbated by food shortages. [Word count: 99]
 
 
 ## Q7
@@ -321,16 +321,20 @@ eta_squared(model)
 
 **Q7a**
 
-*ANSWER:* (i) XXX (ii) XXX (iii) XXX 
+*ANSWER:* 
+i) Option B is not possible.
 
+(ii) Option A is not possible.
+
+(iii) Option A is not possible.
 
 **Q7b**
 
-*ANSWER:* (i) XXX (ii) XXX (iii) XXX [Word Count: N]
+*ANSWER:* (i) Option B (χ²(6) = 12.22, p = .431) is not possible because a chi-squared test with 6 degrees of freedom should yield a larger test statistic for a p-value of .431, which is not significant. A value of 12.22 suggests a significant result, inconsistent with the high p-value. 
+ii) Option A (t(23) = 0.162, p = .003) is not possible because a t-test with 23 degrees of freedom and a test statistic of 0.162 is too small to produce a p-value of .003, which indicates significance. A larger t-value is needed for such a low p-value. 
+(iii) Option A (F(3,54) = -13.2, p < .001) is not possible because an F-statistic cannot be negative, as it represents a ratio of variances, which must be positive regardless of degrees of freedom (3, 54) or p-value significance. [Word Count: 142]
 
-
+ 
 ## Q8
 
-My favourite character is Super Size — not just because of his name (which is great), but because he brings calm, diplomacy, and perspective to the group. While others argue or get defensive, he steps in to de-escalate tension and refocus everyone on collaboration. In a data-driven debate where personalities clash and egos flare, having someone like Super Size — thoughtful, kind, and balanced — is exactly what a team needs. Plus, his self-awareness and sense of humour make him even more likeable.
-*ANSWER:* XXX
-
+*ANSWER:* My favourite character was Super Size — he brings calm, diplomacy, and perspective to the group. While others get defensive, he steps in to refocus everyone on collaboration. In a data-driven debate having someone like Super Size  is exactly what a team needs.
